@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 
 import socketserver
@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename='myapp.log',
+                    filename='/tmp/myapp.log',
                     filemode='w')
 logger = logging.getLogger(__file__)
 
@@ -29,13 +29,14 @@ class MyServer(socketserver.BaseRequestHandler):
             if message == "exit":
                 break
             # 回复消息
-            # data = input("Reply message:")
+            data = (message.decode('utf-8') + ' Done!')
             # 发送消息
-            # conn.sendall(data.encode('utf-8'))
+            conn.sendall(data.encode('utf-8'))
 
 
 if __name__ == "__main__":
     # 实例化
-    server = socketserver.ThreadingTCPServer(('0.0.0.0', 9999,), MyServer)
+    # server = socketserver.ThreadingTCPServer(('0.0.0.0', 9999,), MyServer)  # 线程
+    server = socketserver.ForkingTCPServer(('0.0.0.0', 9999,), MyServer)  # 进程
     # 调用serve_forever方法
     server.serve_forever()

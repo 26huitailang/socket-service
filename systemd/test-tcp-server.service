@@ -1,0 +1,12 @@
+[Unit]
+Description=Echo Wall TCP Server
+After=network.target sockets.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/peter/socket-service/tcp_server.py
+# PIDFile=/var/run/test-echo-wall-tcp-server.pid
+Type=simple
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
